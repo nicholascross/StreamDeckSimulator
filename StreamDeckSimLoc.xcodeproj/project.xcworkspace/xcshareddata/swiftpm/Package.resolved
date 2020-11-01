@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Shell",
+        "repositoryURL": "https://github.com/AlwaysRightInstitute/Shell.git",
+        "state": {
+          "branch": null,
+          "revision": "9982634c51b506d42fcb11b1c85e7ccc145679bd",
+          "version": "0.1.4"
+        }
+      },
+      {
+        "package": "Starscream",
+        "repositoryURL": "https://github.com/daltoniam/Starscream",
+        "state": {
+          "branch": null,
+          "revision": "df8d82047f6654d8e4b655d1b1525c64e1059d21",
+          "version": "4.0.4"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

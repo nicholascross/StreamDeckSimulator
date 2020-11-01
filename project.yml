@@ -1,0 +1,26 @@
+name: StreamDeckSimLoc
+packages:
+  Starscream:
+    url: https://github.com/daltoniam/Starscream
+    from: 4.0.4
+targets:
+  StreamDeckSimLocPlugin:
+    type: tool
+    platform: macOS
+    deploymentTarget: "10.15"
+    sources: [Plugin]
+    dependencies:
+      - target: StreamDeckKit
+      - package: Starscream
+    postCompileScripts:
+      - script: rm -rf $BUILT_PRODUCTS_DIR/com.nacross.stream-deck-sim-loc.streamDeckPlugin
+        name: Clean plugin package
+      - script: cp -f $BUILT_PRODUCTS_DIR/StreamDeckSimLocPlugin $PROJECT_DIR/com.nacross.stream-deck-sim-loc.sdPlugin/StreamDeckSimLocPlugin
+        name: Prepare plugin binary
+      - script: $PROJECT_DIR/Vendor/DistributionTool -b -i $PROJECT_DIR/com.nacross.stream-deck-sim-loc.sdPlugin/ -o $BUILT_PRODUCTS_DIR
+        name: Package plugin
+  StreamDeckKit:
+    type: library.static
+    platform: macOS
+    deploymentTarget: "10.15"
+    sources: [StreamDeckKit]

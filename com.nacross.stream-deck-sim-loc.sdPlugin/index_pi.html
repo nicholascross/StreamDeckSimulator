@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>com.elgato.sample PI</title>
+    <link rel="stylesheet" href="css/sdpi.css">
+</head>
+
+<body>
+    <div class="sdpi-wrapper">
+        <div class="sdpi-item" id="coordinate_lat">
+            <div class="sdpi-item-label">Latitude</div>
+            <input class="sdpi-item-value" id="latitude" inputmode="numeric" pattern="[0-9]+\.[0-9]+" type="number" name="lat" step=".0001">
+        </div>        
+
+        <div class="sdpi-item" id="coordinate_long">
+            <div class="sdpi-item-label">Longitude</div>
+            <input class="sdpi-item-value" id="longitude" inputmode="numeric" pattern="[0-9]+\.[0-9]+" type="number" name="long" step=".0001">
+        </div>        
+
+        <div class="sdpi-item" id="device_type">
+            <div class="sdpi-item-label">Simulator</div> 
+            <select id="device_type_select" class="sdpi-item-value select">
+            </select> 
+        </div>
+     </div>
+     <script src="jquery-3.5.1.min.js"></script>
+     <script src="utils.js"></script>
+     <script>
+        // this is our global websocket, used to communicate from/to Stream Deck software
+        // and some info about our plugin, as sent by Stream Deck software
+        var websocket = null,
+        uuid = null,
+        actionInfo = {};
+
+        function connectElgatoStreamDeckSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
+            
+
+            uuid = inUUID;
+            // please note: the incoming arguments are of type STRING, so
+            // in case of the inActionInfo, we must parse it into JSON first
+            actionInfo = JSON.parse(inActionInfo); // cache the info
+            websocket = new WebSocket('ws://localhost:' + inPort);
+
+            // if connection was established, the websocket sends
+            // an 'onopen' event, where we need to register our PI
+            websocket.onopen = function () {
+                var json = {
+                    event:  inRegisterEvent,
+                    uuid:   inUUID
+                };
+                // register property inspector to Stream Deck
+                websocket.send(JSON.stringify(json));
+                sendValueToPlugin(JSON.stringify(inInfo), "inInfo")
+                addDynamicStyles(inInfo.colors, 'connectElgatoStreamDeckSocket');
+            }
+
+            websocket.onmessage = function (message) {
+                var jsonObj = JSON.parse(message.data);
+                var event = jsonObj.event;
+                if (event === 'sendToPropertyInspector') {
+                    sendValueToPlugin(JSON.stringify(jsonObj), "echo")
+
+                    if (jsonObj.payload.booted != undefined && jsonObj.payload.shutdown != undefined) {
+                        updateSimulatorList({Booted: jsonObj.payload.booted, Shutdown: jsonObj.payload.shutdown})
+                    }
+                }
+            }
+        }
+
+        // our method to pass values to the plugin
+        function sendValueToPlugin(value, param) {
+            if (websocket) {
+                const json = {
+                        "action": actionInfo['action'],
+                        "event": "sendToPlugin",
+                        "context": uuid,
+                        "payload": {
+                            [param] : value
+                        }
+                 };
+                 websocket.send(JSON.stringify(json));
+            }
+        }
+
+        function updateSimulatorList(devices) {
+            $(function(){
+                var $select = $('#device_type_select');
+
+                $.each(devices, function(key, value){
+
+                    var group = $('<optgroup label="' + key + '" />');
+
+                    $.each(value, function(){
+                        $('<option />').html(this.name).appendTo(group);
+                    });
+
+                    group.appendTo($select);
+                });
+            });
+        }
+
+        function addDynamicStyles(clrs, fromWhere) {
+            const node = document.getElementById('#sdpi-dynamic-styles') || document.createElement('style');
+            if (!clrs.mouseDownColor) clrs.mouseDownColor = Utils.fadeColor(clrs.highlightColor, -100);
+            const clr = clrs.highlightColor.slice(0, 7);
+            const clr1 = Utils.fadeColor(clr, 100);
+            const clr2 = Utils.fadeColor(clr, 60);
+            const metersActiveColor = Utils.fadeColor(clr, -60);
+
+            node.setAttribute('id', 'sdpi-dynamic-styles');
+            node.innerHTML = `
+            input[type="radio"]:checked + label span,
+            input[type="checkbox"]:checked + label span {
+                background-color: ${clrs.highlightColor};
+            }
+            input[type="radio"]:active:checked + label span,
+            input[type="checkbox"]:active:checked + label span {
+            background-color: ${clrs.mouseDownColor};
+            }
+            input[type="radio"]:active + label span,
+            input[type="checkbox"]:active + label span {
+            background-color: ${clrs.buttonPressedBorderColor};
+            }
+            td.selected,
+            td.selected:hover,
+            li.selected:hover,
+            li.selected {
+            color: white;
+            background-color: ${clrs.highlightColor};
+            }
+            .sdpi-file-label > label:active,
+            .sdpi-file-label.file:active,
+            label.sdpi-file-label:active,
+            label.sdpi-file-info:active,
+            input[type="file"]::-webkit-file-upload-button:active,
+            button:active {
+            border: 1pt solid ${clrs.buttonPressedBorderColor};
+            background-color: ${clrs.buttonPressedBackgroundColor};
+            color: ${clrs.buttonPressedTextColor};
+            border-color: ${clrs.buttonPressedBorderColor};
+            }
+            ::-webkit-progress-value,
+            meter::-webkit-meter-optimum-value {
+                background: linear-gradient(${clr2}, ${clr1} 20%, ${clr} 45%, ${clr} 55%, ${clr2})
+            }
+            ::-webkit-progress-value:active,
+            meter::-webkit-meter-optimum-value:active {
+                background: linear-gradient(${clr}, ${clr2} 20%, ${metersActiveColor} 45%, ${metersActiveColor} 55%, ${clr})
+            }
+            `;
+            document.body.appendChild(node);
+        };
+     </script>
+</body>
+</html>

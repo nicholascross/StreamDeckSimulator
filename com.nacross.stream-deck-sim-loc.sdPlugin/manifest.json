@@ -1,0 +1,37 @@
+{
+  "Actions": [
+    {
+      "Icon": "images/ActionIcon",
+      "Name": "StreamDeckSimLocAction",
+      "SupportedInMultiActions": false,
+      "Tooltip": "StreamDeckSimLoc",
+      "UUID": "com.nacross.stream-deck-sim-loc.action",
+      "States": [
+        {
+          "Image": "images/Icon",
+          "TitleAlignment": "middle", 
+          "FontSize": "16"
+        }
+      ]
+    }
+  ],
+  "SDKVersion": 2,
+  "Author": "Nicholas Cross",
+  "CodePath": "StreamDeckSimLocPlugin",
+  "PropertyInspectorPath": "index_pi.html", 
+  "Description": "Custom plugin",
+  "Name": "StreamDeckSimLoc",
+  "Icon": "images/PluginIcon",
+  "URL": "https://github.com/nicholascross/streamdeck",
+  "Version": "1.1",
+  "OS": [
+    {
+        "Platform": "mac",
+        "MinimumVersion" : "10.14"
+    }
+  ],
+  "Software":
+    {
+        "MinimumVersion" : "4.3"
+    }
+}
