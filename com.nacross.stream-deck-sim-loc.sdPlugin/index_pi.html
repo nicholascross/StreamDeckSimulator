@@ -11,17 +11,17 @@
     <div class="sdpi-wrapper">
         <div class="sdpi-item" id="coordinate_lat">
             <div class="sdpi-item-label">Latitude</div>
-            <input class="sdpi-item-value" id="latitude" inputmode="numeric" pattern="[0-9]+\.[0-9]+" type="number" name="lat" step=".0001">
+            <input class="sdpi-item-value" id="coord_lat" inputmode="numeric" pattern="[0-9]+\.[0-9]+" type="number" name="lat" step=".0001" onchange="sendValueToPlugin(event.target.value, 'latitude')">
         </div>        
 
         <div class="sdpi-item" id="coordinate_long">
             <div class="sdpi-item-label">Longitude</div>
-            <input class="sdpi-item-value" id="longitude" inputmode="numeric" pattern="[0-9]+\.[0-9]+" type="number" name="long" step=".0001">
+            <input class="sdpi-item-value" id="coord_long" inputmode="numeric" pattern="[0-9]+\.[0-9]+" type="number" name="long" step=".0001" onchange="sendValueToPlugin(event.target.value, 'longitude')">
         </div>        
 
         <div class="sdpi-item" id="device_type">
             <div class="sdpi-item-label">Simulator</div> 
-            <select id="device_type_select" class="sdpi-item-value select">
+            <select id="device_type_select" class="sdpi-item-value select" onchange="sendValueToPlugin(event.target.value, 'simulator')">
             </select> 
         </div>
      </div>
@@ -35,8 +35,6 @@
         actionInfo = {};
 
         function connectElgatoStreamDeckSocket(inPort, inUUID, inRegisterEvent, inInfo, inActionInfo) {
-            
-
             uuid = inUUID;
             // please note: the incoming arguments are of type STRING, so
             // in case of the inActionInfo, we must parse it into JSON first
@@ -63,7 +61,9 @@
                     sendValueToPlugin(JSON.stringify(jsonObj), "echo")
 
                     if (jsonObj.payload.booted != undefined && jsonObj.payload.shutdown != undefined) {
-                        updateSimulatorList({Booted: jsonObj.payload.booted, Shutdown: jsonObj.payload.shutdown})
+                        updateSimulatorList({Booted: jsonObj.payload.booted, Shutdown: jsonObj.payload.shutdown});
+                    } else if (jsonObj.payload.latitude != undefined || jsonObj.payload.longitude != undefined) {
+                        updateCoords(jsonObj.payload.latitude, jsonObj.payload.longitude);
                     }
                 }
             }
@@ -93,12 +93,17 @@
                     var group = $('<optgroup label="' + key + '" />');
 
                     $.each(value, function(){
-                        $('<option />').html(this.name).appendTo(group);
+                        $('<option value="'+ this.udid +'"'+ (this.selected ? ' selected ' : '' ) +'/>').html(this.name).appendTo(group);
                     });
 
                     group.appendTo($select);
                 });
             });
+        }
+
+        function updateCoords(latitude, longitude) {
+            $('#coord_lat').val(latitude);
+            $('#coord_long').val(longitude);
         }
 
         function addDynamicStyles(clrs, fromWhere) {
