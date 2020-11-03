@@ -1,5 +1,6 @@
 import Foundation
 import StreamDeckKit
+import CoreLocation
 
 public final class Plugin: StreamDeckConnectionDelegate {
     private let connection: StreamDeckConnection
@@ -65,13 +66,24 @@ public final class Plugin: StreamDeckConnectionDelegate {
     }
     
     public func keyDown(_: (row: Int, column: Int), isInMultiAction: Bool, action: String, context: String, device: String) {
-        logDebug("Key down")
-        connection.setTitle("Down", context: context, target: .both, state: 0)
+        guard let lat = loadedSettings.latitude, let long = loadedSettings.longitude, let latitude = Double(lat), let longitude = Double(long) else {
+            connection.showAlert(context: context)
+            return
+        }
+        
+        guard let udid = loadedSettings.simulator, let simulator = UUID(uuidString: udid) else {
+            connection.showAlert(context: context)
+            return
+        }
+        
+        let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
+        SimulatorControl().updateLocations(coordinate: location, identifiers: [simulator])
+        connection.showOkay(context: context)
     }
     
     public func keyUp(_: (row: Int, column: Int), isInMultiAction: Bool, action: String, context: String, device: String) {
-        logDebug("Key up")
-        connection.setTitle("Up", context: context, target: .both, state: 0)
+        
     }
     
     public func didWakeUp() {
