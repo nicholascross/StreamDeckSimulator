@@ -1,8 +1,8 @@
-# Stream Deck Simulator Plugin
+# Stream Deck iOS Simulator Plugin
 
 ## Features
 
- - Configure latitude/longitude and choose a device to set simulator geolocation on key press
+ - Configure latitude/longitude and choose a device to set iOS simulator geolocation on key press
  
 ## Installation
 
