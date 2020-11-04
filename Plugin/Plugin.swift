@@ -41,11 +41,23 @@ public final class Plugin: StreamDeckConnectionDelegate {
             var shutdown: [Device]
         }
 
-        let selected = settings[Fields.simulator.rawValue] as? String
-        
         do {
-            let booted = try SimulatorControl().simulators().filter { $0.state == .booted }.map { Device(name: $0.name, udid: $0.udid.uuidString, selected: selected == $0.udid.uuidString) }
-            let shutdown = try SimulatorControl().simulators().filter { $0.state == .shutdown }.map { Device(name: $0.name, udid: $0.udid.uuidString, selected: selected == $0.udid.uuidString) }
+            let simulators = try SimulatorControl().simulators()
+            
+            let selected: String?
+            if let simulator = settings[Fields.simulator.rawValue] as? String {
+                selected = simulator
+            } else {
+                // set default simulator
+                selected = (simulators.first { $0.state == .booted }.map { $0.udid.uuidString }) ??
+                    (simulators.first { $0.state == .shutdown }.map { $0.udid.uuidString })
+                
+                loadedSettings.simulator = selected
+                connection.setSettings(loadedSettings, context: context)
+            }
+
+            let booted = simulators.filter { $0.state == .booted }.map { Device(name: $0.name, udid: $0.udid.uuidString, selected: selected == $0.udid.uuidString) }
+            let shutdown = simulators.filter { $0.state == .shutdown }.map { Device(name: $0.name, udid: $0.udid.uuidString, selected: selected == $0.udid.uuidString) }
 
             connection.sendToPropertyInspector(Simulators(booted: booted, shutdown: shutdown), action: action, context: context)
         } catch {
