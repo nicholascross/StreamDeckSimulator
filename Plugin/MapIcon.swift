@@ -3,7 +3,7 @@ import SwiftUI
 import MapKit
 import StreamDeckKit
 
-func makeMapIcon(coordinates: CLLocationCoordinate2D, completion: @escaping (NSImage) -> Void) -> MKMapSnapshotter {
+func makeMapIcon(coordinates: CLLocationCoordinate2D, completion: @escaping (NSImage) -> Void) {
     let mapSnapshotOptions = MKMapSnapshotter.Options()
     let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: 100, longitudinalMeters: 100)
     mapSnapshotOptions.appearance = NSAppearance(appearanceNamed: .vibrantLight, bundle: .main)
@@ -19,8 +19,6 @@ func makeMapIcon(coordinates: CLLocationCoordinate2D, completion: @escaping (NSI
             logError("Failed to make icon \(error.debugDescription)")
         }
     }
-
-    return snapShotter
 }
 
 func bootedOverlay(color: Color) -> some View {

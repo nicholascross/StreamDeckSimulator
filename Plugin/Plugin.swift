@@ -26,8 +26,7 @@ public final class Plugin: StreamDeckConnectionDelegate {
     public func didDisconnectDevice(_: String, info: DeviceInfo) {
         
     }
-    
-    var snapshotLoader: Any?
+
     public func didReceiveSettings(_ settings: [String : Any], action: String, context: String, device: String) {
         logDebug("didReceiveSettings: \(settings)")
 
@@ -158,7 +157,7 @@ public final class Plugin: StreamDeckConnectionDelegate {
            let latitude = Double(lat), let longitude = Double(long),
            let simulatorUDID = loadedSettings[context]?.simulator,
            let simulator = try? SimulatorControl().simulators().first(where: { $0.udid.uuidString == simulatorUDID }) {
-            snapshotLoader = makeMapIcon(coordinates: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)) { image in
+            makeMapIcon(coordinates: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)) { image in
                 self.connection.setButtonIcon(context: context) {
                     ZStack {
                         Image(nsImage: image)
