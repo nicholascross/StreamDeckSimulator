@@ -29,6 +29,12 @@ public final class Plugin: StreamDeckConnectionDelegate {
     var snapshotLoader: Any?
     public func didReceiveSettings(_ settings: [String : Any], action: String, context: String, device: String) {
         logDebug("didReceiveSettings: \(settings)")
+
+        guard let settings = settings[context] as? [String: Any] else {
+            logDebug("ignore settings for different context: \(context)")
+            return
+        }
+        
         settings.forEach {
             var settings = loadedSettings[context] ?? Settings()
             settings.update(key: $0.key, value: $0.value)
