@@ -114,6 +114,7 @@ public final class Plugin: StreamDeckConnectionDelegate {
     
     public func willAppear(_: (row: Int, column: Int), isInMultiAction: Bool, settings: [String : Any], action: String, context: String, device: String) {
         logDebug("will appear: \(action)")
+        connection.getSettings(context: context)
     }
     
     public func willDisappear(_: (row: Int, column: Int), isInMultiAction: Bool, settings: [String : Any], action: String, context: String, device: String) {
