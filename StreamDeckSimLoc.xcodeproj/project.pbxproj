@@ -32,6 +32,7 @@
 		D1036D44254D95A800E67549 /* Shell in Frameworks */ = {isa = PBXBuildFile; productRef = D1036D43254D95A800E67549 /* Shell */; };
 		D18B70D4254D8F12005BEE7A /* SimulatorControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18B70D3254D8F12005BEE7A /* SimulatorControl.swift */; };
 		D1984712255674AC009252D1 /* NSImage+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1984711255674AC009252D1 /* NSImage+Base64.swift */; };
+		D19847162556779A009252D1 /* NSView+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19847152556779A009252D1 /* NSView+Image.swift */; };
 		D198471A25567B4E009252D1 /* NSImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198471925567B4E009252D1 /* NSImage+Color.swift */; };
 		D3B0D0FB3D2396E014C6D1FA /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53DE0F94A5795B6C1432534 /* Coordinates.swift */; };
 		D4B7A85CDC136775009A4110 /* StreamDeckActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C3D6B64E407F322EEC7876 /* StreamDeckActionType.swift */; };
@@ -75,6 +76,7 @@
 		C53DE0F94A5795B6C1432534 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
 		D18B70D3254D8F12005BEE7A /* SimulatorControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorControl.swift; sourceTree = "<group>"; };
 		D1984711255674AC009252D1 /* NSImage+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Base64.swift"; sourceTree = "<group>"; };
+		D19847152556779A009252D1 /* NSView+Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Image.swift"; sourceTree = "<group>"; };
 		D198471925567B4E009252D1 /* NSImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Color.swift"; sourceTree = "<group>"; };
 		D2674D773EA05675F271C1E0 /* SetTitlePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetTitlePayload.swift; sourceTree = "<group>"; };
 		D52CF2E929626BB5FCBBC8D3 /* TargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetType.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				D1984711255674AC009252D1 /* NSImage+Base64.swift */,
+				D19847152556779A009252D1 /* NSView+Image.swift */,
 				D198471925567B4E009252D1 /* NSImage+Color.swift */,
 			);
 			path = Icons;
@@ -371,6 +374,7 @@
 				2C49AD6414F3249CB21EB5CD /* SetStatePayload.swift in Sources */,
 				D198471A25567B4E009252D1 /* NSImage+Color.swift in Sources */,
 				5157A115DFF54D4CF93E16CA /* SetTitlePayload.swift in Sources */,
+				D19847162556779A009252D1 /* NSView+Image.swift in Sources */,
 				BBA9C4A03FCA9080A59AAE07 /* StandardPayload.swift in Sources */,
 				71AF3F7A69085D681318620F /* StreamDeckAction.swift in Sources */,
 				D4B7A85CDC136775009A4110 /* StreamDeckActionType.swift in Sources */,
