@@ -1,6 +1,7 @@
 import Foundation
 import StreamDeckKit
 import CoreLocation
+import SwiftUI
 
 public final class Plugin: StreamDeckConnectionDelegate {
     private let connection: StreamDeckConnection
@@ -153,10 +154,20 @@ public final class Plugin: StreamDeckConnectionDelegate {
     }
     
     private func updateIcon(context: String) {
-        if let lat = loadedSettings[context]?.latitude, let long = loadedSettings[context]?.longitude, let latitude = Double(lat), let longitude = Double(long) {
+        if let lat = loadedSettings[context]?.latitude, let long = loadedSettings[context]?.longitude,
+           let latitude = Double(lat), let longitude = Double(long),
+           let simulatorUDID = loadedSettings[context]?.simulator,
+           let simulator = try? SimulatorControl().simulators().first(where: { $0.udid.uuidString == simulatorUDID }) {
             snapshotLoader = makeMapIcon(coordinates: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)) { image in
-                if let base64String = image.base64String {
-                    self.connection.setImage(base64String, context: context, target: .both)
+                self.connection.setButtonIcon(context: context) {
+                    ZStack {
+                        Image(nsImage: image)
+                        if simulator.state == .booted {
+                            bootedOverlay(color: .green)
+                        } else {
+                            bootedOverlay(color: .red)
+                        }
+                    }
                 }
             }
         }

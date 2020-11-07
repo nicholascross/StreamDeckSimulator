@@ -22,3 +22,7 @@ func makeMapIcon(coordinates: CLLocationCoordinate2D, completion: @escaping (NSI
 
     return snapShotter
 }
+
+func bootedOverlay(color: Color) -> some View {
+    return Circle().fill(color).frame(width: 10, height: 10).offset(x: -5.0, y: -5.0).frame(width: 72, height: 72, alignment: .bottomTrailing)
+}
