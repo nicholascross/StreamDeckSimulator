@@ -26,9 +26,12 @@ public final class Plugin: StreamDeckConnectionDelegate {
         
     }
     
+    var snapshotLoader: Any?
     public func didReceiveSettings(_ settings: [String : Any], action: String, context: String, device: String) {
         logDebug("didReceiveSettings: \(settings)")
         settings.forEach { loadedSettings.update(key: $0.key, value: $0.value) }
+        
+        updateIcon(context: context)
         
         struct Device: Encodable {
             let name: String
@@ -136,6 +139,17 @@ public final class Plugin: StreamDeckConnectionDelegate {
         loadedSettings.update(key: key, value: value)
         logDebug("will update settings: \(loadedSettings)")
         connection.setSettings(loadedSettings, context: context)
+        updateIcon(context: context)
+    }
+    
+    private func updateIcon(context: String) {
+        if let lat = loadedSettings.latitude, let long = loadedSettings.longitude, let latitude = Double(lat), let longitude = Double(long) {
+            snapshotLoader = makeMapIcon(coordinates: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)) { image in
+                if let base64String = image.base64String {
+                    self.connection.setImage(base64String, context: context, target: .both)
+                }
+            }
+        }
     }
 
 }
