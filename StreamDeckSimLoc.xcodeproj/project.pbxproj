@@ -31,6 +31,8 @@
 		BF366A15FC9E9B4875878354 /* TargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52CF2E929626BB5FCBBC8D3 /* TargetType.swift */; };
 		D1036D44254D95A800E67549 /* Shell in Frameworks */ = {isa = PBXBuildFile; productRef = D1036D43254D95A800E67549 /* Shell */; };
 		D18B70D4254D8F12005BEE7A /* SimulatorControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18B70D3254D8F12005BEE7A /* SimulatorControl.swift */; };
+		D1984712255674AC009252D1 /* NSImage+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1984711255674AC009252D1 /* NSImage+Base64.swift */; };
+		D198471A25567B4E009252D1 /* NSImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198471925567B4E009252D1 /* NSImage+Color.swift */; };
 		D3B0D0FB3D2396E014C6D1FA /* Coordinates.swift in Sources */ = {isa = PBXBuildFile; fileRef = C53DE0F94A5795B6C1432534 /* Coordinates.swift */; };
 		D4B7A85CDC136775009A4110 /* StreamDeckActionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C3D6B64E407F322EEC7876 /* StreamDeckActionType.swift */; };
 		DEA8BF7B43D37F445463A486 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E316DB562A2457F40BCF7 /* Logging.swift */; };
@@ -72,6 +74,8 @@
 		C128E6C7F40B0014C21669E2 /* Encodable+JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Encodable+JSON.swift"; sourceTree = "<group>"; };
 		C53DE0F94A5795B6C1432534 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
 		D18B70D3254D8F12005BEE7A /* SimulatorControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorControl.swift; sourceTree = "<group>"; };
+		D1984711255674AC009252D1 /* NSImage+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Base64.swift"; sourceTree = "<group>"; };
+		D198471925567B4E009252D1 /* NSImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Color.swift"; sourceTree = "<group>"; };
 		D2674D773EA05675F271C1E0 /* SetTitlePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetTitlePayload.swift; sourceTree = "<group>"; };
 		D52CF2E929626BB5FCBBC8D3 /* TargetType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetType.swift; sourceTree = "<group>"; };
 		EC9E316DB562A2457F40BCF7 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
@@ -160,6 +164,7 @@
 		B3898F5535C764871FDC05B5 /* StreamDeckKit */ = {
 			isa = PBXGroup;
 			children = (
+				D19847102556748D009252D1 /* Icons */,
 				EC9E316DB562A2457F40BCF7 /* Logging.swift */,
 				0E740728BF72F587EBA245C6 /* PluginConfiguration.swift */,
 				188B6AF48C9D22B8D7B00BD8 /* StreamDeckConnection.swift */,
@@ -169,6 +174,15 @@
 				2E3A96A501F610E867E22364 /* Events */,
 			);
 			path = StreamDeckKit;
+			sourceTree = "<group>";
+		};
+		D19847102556748D009252D1 /* Icons */ = {
+			isa = PBXGroup;
+			children = (
+				D1984711255674AC009252D1 /* NSImage+Base64.swift */,
+				D198471925567B4E009252D1 /* NSImage+Color.swift */,
+			);
+			path = Icons;
 			sourceTree = "<group>";
 		};
 		E393B4E67CDE28F02128B821 /* Payloads */ = {
@@ -351,9 +365,11 @@
 				4DB52FE4836F7FCE32F4C825 /* KeyPayload.swift in Sources */,
 				DEA8BF7B43D37F445463A486 /* Logging.swift in Sources */,
 				1E175C92CFA80A486CA35C75 /* PluginConfiguration.swift in Sources */,
+				D1984712255674AC009252D1 /* NSImage+Base64.swift in Sources */,
 				F1246FFD1BE71AE20056EFA7 /* RegisterAction.swift in Sources */,
 				E86C2C54B30F6B90706A8FDB /* SetImagePayload.swift in Sources */,
 				2C49AD6414F3249CB21EB5CD /* SetStatePayload.swift in Sources */,
+				D198471A25567B4E009252D1 /* NSImage+Color.swift in Sources */,
 				5157A115DFF54D4CF93E16CA /* SetTitlePayload.swift in Sources */,
 				BBA9C4A03FCA9080A59AAE07 /* StandardPayload.swift in Sources */,
 				71AF3F7A69085D681318620F /* StreamDeckAction.swift in Sources */,
