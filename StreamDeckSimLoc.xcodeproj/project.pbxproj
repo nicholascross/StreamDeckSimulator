@@ -32,6 +32,7 @@
 		D1036D44254D95A800E67549 /* Shell in Frameworks */ = {isa = PBXBuildFile; productRef = D1036D43254D95A800E67549 /* Shell */; };
 		D18B70D4254D8F12005BEE7A /* SimulatorControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18B70D3254D8F12005BEE7A /* SimulatorControl.swift */; };
 		D19847092555FD52009252D1 /* ButtonIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19847082555FD52009252D1 /* ButtonIcon.swift */; };
+		D198470D2556494D009252D1 /* MapIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198470C2556494D009252D1 /* MapIcon.swift */; };
 		D1984712255674AC009252D1 /* NSImage+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1984711255674AC009252D1 /* NSImage+Base64.swift */; };
 		D19847162556779A009252D1 /* NSView+Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19847152556779A009252D1 /* NSView+Image.swift */; };
 		D198471A25567B4E009252D1 /* NSImage+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198471925567B4E009252D1 /* NSImage+Color.swift */; };
@@ -77,6 +78,7 @@
 		C53DE0F94A5795B6C1432534 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
 		D18B70D3254D8F12005BEE7A /* SimulatorControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorControl.swift; sourceTree = "<group>"; };
 		D19847082555FD52009252D1 /* ButtonIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonIcon.swift; sourceTree = "<group>"; };
+		D198470C2556494D009252D1 /* MapIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapIcon.swift; sourceTree = "<group>"; };
 		D1984711255674AC009252D1 /* NSImage+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Base64.swift"; sourceTree = "<group>"; };
 		D19847152556779A009252D1 /* NSView+Image.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Image.swift"; sourceTree = "<group>"; };
 		D198471925567B4E009252D1 /* NSImage+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Color.swift"; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				30203FCE306B3BBD50B01DE6 /* main.swift */,
 				43F83EB0D2BA635E9FEB5035 /* Plugin.swift */,
 				D18B70D3254D8F12005BEE7A /* SimulatorControl.swift */,
+				D198470C2556494D009252D1 /* MapIcon.swift */,
 			);
 			path = Plugin;
 			sourceTree = "<group>";
@@ -357,6 +360,7 @@
 				9D9067CEB50E5B699DAD1AF5 /* Plugin.swift in Sources */,
 				D18B70D4254D8F12005BEE7A /* SimulatorControl.swift in Sources */,
 				0FA38B779A650154A15ED2C1 /* main.swift in Sources */,
+				D198470D2556494D009252D1 /* MapIcon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
