@@ -4,7 +4,7 @@ import CoreLocation
 
 public final class Plugin: StreamDeckConnectionDelegate {
     private let connection: StreamDeckConnection
-    private var loadedSettings: Settings = Settings()
+    private var loadedSettings: [String:Settings] = [:]
     
     init(connection: StreamDeckConnection) {
         self.connection = connection
@@ -29,7 +29,11 @@ public final class Plugin: StreamDeckConnectionDelegate {
     var snapshotLoader: Any?
     public func didReceiveSettings(_ settings: [String : Any], action: String, context: String, device: String) {
         logDebug("didReceiveSettings: \(settings)")
-        settings.forEach { loadedSettings.update(key: $0.key, value: $0.value) }
+        settings.forEach {
+            var settings = loadedSettings[context] ?? Settings()
+            settings.update(key: $0.key, value: $0.value)
+            loadedSettings[context] = settings
+        }
         
         updateIcon(context: context)
         
@@ -55,7 +59,7 @@ public final class Plugin: StreamDeckConnectionDelegate {
                 selected = (simulators.first { $0.state == .booted }.map { $0.udid.uuidString }) ??
                     (simulators.first { $0.state == .shutdown }.map { $0.udid.uuidString })
                 
-                loadedSettings.simulator = selected
+                loadedSettings[context]?.simulator = selected
                 connection.setSettings(loadedSettings, context: context)
             }
 
@@ -72,7 +76,7 @@ public final class Plugin: StreamDeckConnectionDelegate {
             let longitude: String?
         }
         
-        let coords = Coords(latitude: loadedSettings.latitude, longitude: loadedSettings.longitude)
+        let coords = Coords(latitude: loadedSettings[context]?.latitude, longitude: loadedSettings[context]?.longitude)
         connection.sendToPropertyInspector(coords, action: action, context: context)
     }
     
@@ -81,12 +85,12 @@ public final class Plugin: StreamDeckConnectionDelegate {
     }
     
     public func keyDown(_: (row: Int, column: Int), isInMultiAction: Bool, action: String, context: String, device: String) {
-        guard let lat = loadedSettings.latitude, let long = loadedSettings.longitude, let latitude = Double(lat), let longitude = Double(long) else {
+        guard let lat = loadedSettings[context]?.latitude, let long = loadedSettings[context]?.longitude, let latitude = Double(lat), let longitude = Double(long) else {
             connection.showAlert(context: context)
             return
         }
         
-        guard let udid = loadedSettings.simulator, let simulator = UUID(uuidString: udid) else {
+        guard let udid = loadedSettings[context]?.simulator, let simulator = UUID(uuidString: udid) else {
             connection.showAlert(context: context)
             return
         }
@@ -136,14 +140,14 @@ public final class Plugin: StreamDeckConnectionDelegate {
     }
     
     private func handleUpdateValue(_ value: Any, key: String, context: String) {
-        loadedSettings.update(key: key, value: value)
+        loadedSettings[context]?.update(key: key, value: value)
         logDebug("will update settings: \(loadedSettings)")
         connection.setSettings(loadedSettings, context: context)
         updateIcon(context: context)
     }
     
     private func updateIcon(context: String) {
-        if let lat = loadedSettings.latitude, let long = loadedSettings.longitude, let latitude = Double(lat), let longitude = Double(long) {
+        if let lat = loadedSettings[context]?.latitude, let long = loadedSettings[context]?.longitude, let latitude = Double(lat), let longitude = Double(long) {
             snapshotLoader = makeMapIcon(coordinates: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)) { image in
                 if let base64String = image.base64String {
                     self.connection.setImage(base64String, context: context, target: .both)
