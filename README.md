@@ -3,6 +3,8 @@
 ## Features
 
  - Configure latitude/longitude and choose a device to set iOS simulator geolocation on key press
+ - Show map on key for relevant latitude/longitude
+ - Show indicator for simulator booted status on key
  
 ## Installation
 
