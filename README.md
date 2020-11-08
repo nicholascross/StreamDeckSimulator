@@ -15,3 +15,15 @@ open StreamDeckSimLoc.xcodeproj
 Then build the project and a plugin package will be created in the products directory.  This can be located by right clicking on the binary and selecting "show in finder"
 
 Double click the plugin package `com.nacross.stream-deck-sim-loc.streamDeckPlugin` to complete installation.
+
+## How was this made?
+
+Using this [template](https://github.com/nicholascross/template_stream_deck_swift).
+
+## How does this work?
+
+The simulator location is set using an undocumented API which could stop working if Apple decides to remove support for it.
+
+Map images are captured using MapKit image snapshotter.
+
+Simulator details are captured using `xcrun simctl` command line tool.
