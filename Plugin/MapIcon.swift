@@ -6,6 +6,10 @@ import StreamDeckKit
 func makeMapIcon(coordinates: CLLocationCoordinate2D, completion: @escaping (NSImage) -> Void) {
     let mapSnapshotOptions = MKMapSnapshotter.Options()
     let region = MKCoordinateRegion(center: coordinates, latitudinalMeters: 100, longitudinalMeters: 100)
+    guard CLLocationCoordinate2DIsValid(coordinates) else {
+        completion(.init(color: .red, size: .init(width: 72, height: 72)))
+        return
+    }
     mapSnapshotOptions.appearance = NSAppearance(appearanceNamed: .vibrantLight, bundle: .main)
     mapSnapshotOptions.region = region
     mapSnapshotOptions.size = CGSize(width: 72, height: 72)
