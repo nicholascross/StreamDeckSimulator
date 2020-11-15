@@ -5,6 +5,7 @@
  - Configure latitude/longitude and choose a device to set iOS simulator geolocation on key press
  - Show map on key for relevant latitude/longitude
  - Show indicator for simulator booted status on key
+ - Show full screen map around a given location allowing traversing the world _(only supported on standard stream deck)_
  
 <img src="/Documentation/example2.png" width="200" height="400"/> <img src="/Documentation/example1.png" width="400" height="400"/> <img src="/Documentation/example3.png" width="400" height="300"/>
 
