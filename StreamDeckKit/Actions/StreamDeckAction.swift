@@ -5,5 +5,6 @@ public struct StreamDeckAction<Payload: Encodable>: Encodable {
     let context: String
     let payload: Payload?
     let action: String?
+    let device: String?
 }
 

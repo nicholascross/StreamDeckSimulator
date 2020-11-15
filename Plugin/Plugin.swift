@@ -5,18 +5,25 @@ import SwiftUI
 
 public final class Plugin: StreamDeckConnectionDelegate {
     private let connection: StreamDeckConnection
-    private var loadedSettings: [String: Settings] = [:]
     private let setLocationAction: SetSimulatorLocationAction
+    private let traverseAction: TraverseAction
+    private let traverseToAction: TraverseToAction
     
     init(connection: StreamDeckConnection) {
         self.connection = connection
         self.setLocationAction = SetSimulatorLocationAction(connection: connection)
+        
+        let traverseAction = TraverseAction(connection: connection)
+        self.traverseAction = traverseAction
+        self.traverseToAction = TraverseToAction(connection: connection, traverseAction: traverseAction)
     }
 
     public func didReceiveSettings(_ settings: [String : Any], action: String, context: String, device: String) {
         switch ActionType(rawValue: action) {
         case .setSimulatorLocation:
             setLocationAction.didReceiveSettings(settings, action: action, context: context, device: device)
+        case .traverse:
+            traverseAction.didReceiveSettings(settings, action: action, context: context, device: device)
         default:
             break
         }
@@ -26,6 +33,10 @@ public final class Plugin: StreamDeckConnectionDelegate {
         switch ActionType(rawValue: action) {
         case .setSimulatorLocation:
             setLocationAction.keyDown(coordinates, isInMultiAction: isInMultiAction, action: action, context: context, device: device)
+        case .traverse:
+            traverseAction.keyDown(coordinates, isInMultiAction: isInMultiAction, action: action, context: context, device: device)
+        case .travelTo:
+            traverseToAction.keyDown(coordinates, isInMultiAction: isInMultiAction, action: action, context: context, device: device)
         default:
             break
         }
@@ -35,6 +46,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
         switch ActionType(rawValue: action) {
         case .setSimulatorLocation:
             setLocationAction.keyUp(coordinates, isInMultiAction: isInMultiAction, action: action, context: context, device: device)
+        case .traverse:
+            traverseAction.keyUp(coordinates, isInMultiAction: isInMultiAction, action: action, context: context, device: device)
         default:
             break
         }
@@ -44,6 +57,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
         switch ActionType(rawValue: action) {
         case .setSimulatorLocation:
             setLocationAction.propertyInspectorDidAppear(action: action, context: context, device: device)
+        case .traverse:
+            traverseAction.propertyInspectorDidAppear(action: action, context: context, device: device)
         default:
             break
         }
@@ -53,6 +68,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
         switch ActionType(rawValue: action) {
         case .setSimulatorLocation:
             setLocationAction.propertyInspectorDidDisappear(action: action, context: context, device: device)
+        case .traverse:
+            traverseAction.propertyInspectorDidDisappear(action: action, context: context, device: device)
         default:
             break
         }
@@ -62,6 +79,10 @@ public final class Plugin: StreamDeckConnectionDelegate {
         switch ActionType(rawValue: action) {
         case .setSimulatorLocation:
             setLocationAction.willAppear(coordinates, isInMultiAction: isInMultiAction, settings: settings, action: action, context: context, device: device)
+        case .traverse:
+            traverseAction.willAppear(coordinates, isInMultiAction: isInMultiAction, settings: settings, action: action, context: context, device: device)
+        case .travelTo:
+            traverseToAction.willAppear(coordinates, isInMultiAction: isInMultiAction, settings: settings, action: action, context: context, device: device)
         default:
             break
         }
@@ -71,6 +92,10 @@ public final class Plugin: StreamDeckConnectionDelegate {
         switch ActionType(rawValue: action) {
         case .setSimulatorLocation:
             setLocationAction.willDisappear(coordinates, isInMultiAction: isInMultiAction, settings: settings, action: action, context: context, device: device)
+        case .traverse:
+            traverseAction.willDisappear(coordinates, isInMultiAction: isInMultiAction, settings: settings, action: action, context: context, device: device)
+        case .travelTo:
+            traverseToAction.willDisappear(coordinates, isInMultiAction: isInMultiAction, settings: settings, action: action, context: context, device: device)
         default:
             break
         }
@@ -80,6 +105,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
         switch ActionType(rawValue: action) {
         case .setSimulatorLocation:
             setLocationAction.receivedPayloadFromPropertyInspector(payload, action: action, context: context)
+        case .traverse:
+            traverseAction.receivedPayloadFromPropertyInspector(payload, action: action, context: context)
         default:
             break
         }
@@ -89,6 +116,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
         switch ActionType(rawValue: action) {
         case .setSimulatorLocation:
             setLocationAction.didChangeButtonTitle(title, coordinates: coordinates, state: state, settings: settings, action: action, context: context, device: device)
+        case .traverse:
+            traverseAction.didChangeButtonTitle(title, coordinates: coordinates, state: state, settings: settings, action: action, context: context, device: device)
         default:
             break
         }
@@ -102,8 +131,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
         
     }
     
-    public func didConnectDevice(_: String, info: DeviceInfo) {
-        
+    public func didConnectDevice(_ deviceId: String, info: DeviceInfo) {
+        traverseAction.deviceId = deviceId
     }
     
     public func didDisconnectDevice(_: String, info: DeviceInfo) {
@@ -121,4 +150,10 @@ public final class Plugin: StreamDeckConnectionDelegate {
 
 private enum ActionType: String, Decodable {
     case setSimulatorLocation = "com.nacross.stream-deck-sim-loc.action"
+    case traverse = "com.nacross.stream-deck-sim-loc.traverse"
+    case travelTo = "com.nacross.stream-deck-sim-loc.traverse-to"
+}
+
+public enum PluginConstants {
+    static var zoomLevel: Double = 300.0
 }

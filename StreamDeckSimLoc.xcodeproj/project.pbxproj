@@ -32,6 +32,8 @@
 		D1036D44254D95A800E67549 /* Shell in Frameworks */ = {isa = PBXBuildFile; productRef = D1036D43254D95A800E67549 /* Shell */; };
 		D14B7B20255F795B0021CA78 /* SetSimulatorLocationAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D14B7B1F255F795B0021CA78 /* SetSimulatorLocationAction.swift */; };
 		D18B70D4254D8F12005BEE7A /* SimulatorControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18B70D3254D8F12005BEE7A /* SimulatorControl.swift */; };
+		D18E99822560C993006AAA1C /* TraverseAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18E99812560C993006AAA1C /* TraverseAction.swift */; };
+		D18E99862560E606006AAA1C /* TraverseToAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = D18E99852560E606006AAA1C /* TraverseToAction.swift */; };
 		D19847092555FD52009252D1 /* ButtonIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D19847082555FD52009252D1 /* ButtonIcon.swift */; };
 		D198470D2556494D009252D1 /* MapIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D198470C2556494D009252D1 /* MapIcon.swift */; };
 		D1984712255674AC009252D1 /* NSImage+Base64.swift in Sources */ = {isa = PBXBuildFile; fileRef = D1984711255674AC009252D1 /* NSImage+Base64.swift */; };
@@ -79,6 +81,8 @@
 		C53DE0F94A5795B6C1432534 /* Coordinates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinates.swift; sourceTree = "<group>"; };
 		D14B7B1F255F795B0021CA78 /* SetSimulatorLocationAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetSimulatorLocationAction.swift; sourceTree = "<group>"; };
 		D18B70D3254D8F12005BEE7A /* SimulatorControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulatorControl.swift; sourceTree = "<group>"; };
+		D18E99812560C993006AAA1C /* TraverseAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraverseAction.swift; sourceTree = "<group>"; };
+		D18E99852560E606006AAA1C /* TraverseToAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TraverseToAction.swift; sourceTree = "<group>"; };
 		D19847082555FD52009252D1 /* ButtonIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonIcon.swift; sourceTree = "<group>"; };
 		D198470C2556494D009252D1 /* MapIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapIcon.swift; sourceTree = "<group>"; };
 		D1984711255674AC009252D1 /* NSImage+Base64.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSImage+Base64.swift"; sourceTree = "<group>"; };
@@ -143,6 +147,8 @@
 				D18B70D3254D8F12005BEE7A /* SimulatorControl.swift */,
 				D198470C2556494D009252D1 /* MapIcon.swift */,
 				D14B7B1F255F795B0021CA78 /* SetSimulatorLocationAction.swift */,
+				D18E99812560C993006AAA1C /* TraverseAction.swift */,
+				D18E99852560E606006AAA1C /* TraverseToAction.swift */,
 			);
 			path = Plugin;
 			sourceTree = "<group>";
@@ -361,8 +367,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D9067CEB50E5B699DAD1AF5 /* Plugin.swift in Sources */,
+				D18E99822560C993006AAA1C /* TraverseAction.swift in Sources */,
 				D18B70D4254D8F12005BEE7A /* SimulatorControl.swift in Sources */,
 				D14B7B20255F795B0021CA78 /* SetSimulatorLocationAction.swift in Sources */,
+				D18E99862560E606006AAA1C /* TraverseToAction.swift in Sources */,
 				0FA38B779A650154A15ED2C1 /* main.swift in Sources */,
 				D198470D2556494D009252D1 /* MapIcon.swift in Sources */,
 			);

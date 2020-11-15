@@ -3,11 +3,11 @@ import Starscream
 
 public final class StreamDeckConnection {
     private let port: String
-    private let pluginUUID: String
     private let info: [String: Any]
     private let registerEvent: String
     private var webSocketClient: WebSocketClient?
     
+    public let pluginUUID: String
     public weak var delegate: StreamDeckConnectionDelegate?
     
     public init(configuration: PluginConfiguration) throws {
@@ -15,12 +15,12 @@ public final class StreamDeckConnection {
         logDebug(configuration.pluginUUID ?? "pluginUUID unspecified")
         logDebug(configuration.info?.debugDescription ?? "info unspecified")
         logDebug(configuration.registerEvent ?? "register event unspecified")
-
+        
         guard let port = configuration.port,
               let pluginUUID = configuration.pluginUUID,
               let info = configuration.info,
               let registerEvent = configuration.registerEvent else { throw StreamDeckConnectionError.invalidConfiguration }
-
+        
         self.port = port
         self.pluginUUID = pluginUUID
         self.info = info
@@ -38,13 +38,14 @@ public final class StreamDeckConnection {
     public func disconnect() {
         webSocketClient?.disconnect()
     }
-
+    
     public func setTitle(_ title: String, context: String, target: TargetType, state: Int) {
         guard let data = StreamDeckAction<SetTitlePayload>(
-                event: .setTitle,
-                context: context,
-                payload: .init(title: title, target: target, state: state),
-                action: nil
+            event: .setTitle,
+            context: context,
+            payload: .init(title: title, target: target, state: state),
+            action: nil,
+            device: nil
         ).jsonData else { return }
         
         webSocketClient?.write(stringData: data) {}
@@ -52,10 +53,11 @@ public final class StreamDeckConnection {
     
     public func setImage(_ base64Image: String, context: String, target: TargetType, state: Int? = nil) {
         guard let data = StreamDeckAction<SetImagePayload>(
-                event: .setImage,
-                context: context,
+            event: .setImage,
+            context: context,
             payload: .init(image: base64Image, target: target, state: state),
-            action: nil
+            action: nil,
+            device: nil
         ).jsonData else { return }
         
         webSocketClient?.write(stringData: data) {}
@@ -63,10 +65,11 @@ public final class StreamDeckConnection {
     
     public func setState(_ state: Int, context: String) {
         guard let data = StreamDeckAction<SetStatePayload>(
-                event: .setState,
-                context: context,
-                payload: .init(state: state),
-                action: nil
+            event: .setState,
+            context: context,
+            payload: .init(state: state),
+            action: nil,
+            device: nil
         ).jsonData else { return }
         
         webSocketClient?.write(stringData: data) {}
@@ -74,10 +77,11 @@ public final class StreamDeckConnection {
     
     public func showAlert(context: String) {
         guard let data = StreamDeckAction<[String: String]>(
-                event: .showAlert,
-                context: context,
-                payload: nil,
-                action: nil
+            event: .showAlert,
+            context: context,
+            payload: nil,
+            action: nil,
+            device: nil
         ).jsonData else { return }
         
         webSocketClient?.write(stringData: data) {}
@@ -85,21 +89,23 @@ public final class StreamDeckConnection {
     
     public func showOkay(context: String) {
         guard let data = StreamDeckAction<[String: String]>(
-                event: .showOk,
-                context: context,
-                payload: nil,
-                action: nil
+            event: .showOk,
+            context: context,
+            payload: nil,
+            action: nil,
+            device: nil
         ).jsonData else { return }
         
         webSocketClient?.write(stringData: data) {}
     }
     
-    public func switchToProfile(_ profile: String, context: String) {
+    public func switchToProfile(_ profile: String, context: String, deviceId: String) {
         guard let data = StreamDeckAction<SwitchToProfilePayload>(
-                event: .switchToProfile,
-                context: context,
-                payload: .init(profile: profile),
-                action: nil
+            event: .switchToProfile,
+            context: context,
+            payload: .init(profile: profile),
+            action: nil,
+            device: deviceId
         ).jsonData else { return }
         
         webSocketClient?.write(stringData: data) {}
@@ -107,25 +113,27 @@ public final class StreamDeckConnection {
     
     public func sendToPropertyInspector<Payload: Encodable>(_ payload: Payload, action: String, context: String) {
         guard let data = StreamDeckAction<Payload>(
-                event: .sendToPropertyInspector,
-                context: context,
-                payload: payload,
-                action: action
+            event: .sendToPropertyInspector,
+            context: context,
+            payload: payload,
+            action: action,
+            device: nil
         ).jsonData else {
             logError("Failed to serialise action: \(payload)")
             return
         }
         
-//        logDebug("sendToPropertyInspector: \(String(data: data, encoding: .utf8))")
+        //        logDebug("sendToPropertyInspector: \(String(data: data, encoding: .utf8))")
         webSocketClient?.write(stringData: data) {}
     }
-
+    
     public func setSettings<Payload: Encodable>(_ payload: Payload, context: String) {
         guard let data = StreamDeckAction<Payload>(
-                event: .setSettings,
-                context: context,
-                payload: payload,
-                action: nil
+            event: .setSettings,
+            context: context,
+            payload: payload,
+            action: nil,
+            device: nil
         ).jsonData else { return }
         
         webSocketClient?.write(stringData: data) {}
@@ -133,10 +141,11 @@ public final class StreamDeckConnection {
     
     public func getSettings(context: String) {
         guard let data = StreamDeckAction<[String: String]>(
-                event: .getSettings,
-                context: context,
-                payload: nil,
-                action: nil
+            event: .getSettings,
+            context: context,
+            payload: nil,
+            action: nil,
+            device: nil
         ).jsonData else { return }
         
         webSocketClient?.write(stringData: data) {}
@@ -144,10 +153,11 @@ public final class StreamDeckConnection {
     
     public func setGlobalSettings<Payload: Encodable>(_ payload: Payload, context: String) {
         guard let data = StreamDeckAction<Payload>(
-                event: .setGlobalSettings,
-                context: context,
-                payload: payload,
-                action: nil
+            event: .setGlobalSettings,
+            context: context,
+            payload: payload,
+            action: nil,
+            device: nil
         ).jsonData else { return }
         
         webSocketClient?.write(stringData: data) {}
@@ -155,23 +165,25 @@ public final class StreamDeckConnection {
     
     public func getGlobalSettings(context: String) {
         guard let data = StreamDeckAction<[String: String]>(
-                event: .getGlobalSettings,
-                context: context,
-                payload: nil,
-                action: nil
+            event: .getGlobalSettings,
+            context: context,
+            payload: nil,
+            action: nil,
+            device: nil
         ).jsonData else { return }
         
         webSocketClient?.write(stringData: data) {}
     }
-
+    
     public func openURL(_ url: URL, context: String) {
         struct URLPayload: Encodable { let url: String }
         
         guard let data = StreamDeckAction<URLPayload>(
-                event: .openUrl,
-                context: context,
-                payload: URLPayload(url: url.absoluteString),
-                action: nil
+            event: .openUrl,
+            context: context,
+            payload: URLPayload(url: url.absoluteString),
+            action: nil,
+            device: nil
         ).jsonData else { return }
         
         webSocketClient?.write(stringData: data) {}
@@ -181,10 +193,11 @@ public final class StreamDeckConnection {
         struct MessagePayload: Encodable { let message: String }
         
         guard let data = StreamDeckAction<MessagePayload>(
-                event: .logMessage,
-                context: context,
-                payload: MessagePayload(message: message),
-                action: nil
+            event: .logMessage,
+            context: context,
+            payload: MessagePayload(message: message),
+            action: nil,
+            device: nil
         ).jsonData else { return }
         
         webSocketClient?.write(stringData: data) {}
@@ -204,7 +217,7 @@ extension StreamDeckConnection: WebSocketDelegate {
         switch event {
         case .connected(let connectionInfo):
             logDebug("websocket connected: \(connectionInfo)")
-
+            
             if let data = RegisterAction(event: registerEvent, uuid: pluginUUID).jsonData {
                 webSocketClient?.write(data: data)
             }
@@ -214,7 +227,7 @@ extension StreamDeckConnection: WebSocketDelegate {
             
         case .disconnected:
             logDebug("websocket disconnected")
-
+            
         case .reconnectSuggested(let flag):
             logDebug("websocket reconnect suggested \(flag)")
             
@@ -223,16 +236,16 @@ extension StreamDeckConnection: WebSocketDelegate {
             
         case .error(let error):
             logError("websocket error: \(error.debugDescription)")
-
+            
         case .ping(let data):
             logDebug("websocket ping: \(String(data: data ?? Data(), encoding: .utf8) ?? "")")
-
+            
         case .pong(let data):
             logDebug("websocket pong: \(String(data:data ?? Data(), encoding: .utf8) ?? "")")
-
+            
         case .binary(let data):
             logDebug("websocket data: \(String(data:data, encoding: .utf8) ?? "")")
-
+            
         case .text(let text):
             logDebug("websocket text: \(text)")
             guard let data = text.data(using: .utf8) else { return }
@@ -246,26 +259,26 @@ extension StreamDeckConnection: WebSocketDelegate {
             logError("unknown event type: \(String(data: data, encoding: .utf8) ?? "")")
             return
         }
-
+        
         switch eventType {
         case .applicationDidLaunch:
             guard let event: StreamDeckEvent<ApplicationPayload> = decodeEvent(data: data),
-                    let application = event.payload?.application else {
+                  let application = event.payload?.application else {
                 logError("Unable to decode event \(String(data: data, encoding: .utf8) ?? "")")
                 return
             }
             
             delegate?.didLaunchApplication(application)
-
+            
         case .applicationDidTerminate:
             guard let event: StreamDeckEvent<ApplicationPayload> = decodeEvent(data: data),
                   let application = event.payload?.application else {
                 logError("Unable to decode event \(String(data: data, encoding: .utf8) ?? "")")
                 return
             }
-
+            
             delegate?.didTerminateApplication(application)
-
+            
         case .deviceDidConnect:
             guard let event: StreamDeckEvent<UndefinedPayload> = decodeEvent(data: data),
                   let device = event.device,
@@ -273,9 +286,9 @@ extension StreamDeckConnection: WebSocketDelegate {
                 logError("Unable to decode event \(String(data: data, encoding: .utf8) ?? "")")
                 return
             }
-
+            
             delegate?.didConnectDevice(device, info: deviceInfo)
-
+            
         case .deviceDidDisconnect:
             guard let event: StreamDeckEvent<UndefinedPayload> = decodeEvent(data: data),
                   let device = event.device,
@@ -283,13 +296,13 @@ extension StreamDeckConnection: WebSocketDelegate {
                 logError("Unable to decode event \(String(data: data, encoding: .utf8) ?? "")")
                 return
             }
-
+            
             delegate?.didDisconnectDevice(device, info: deviceInfo)
-
+            
         case .didReceiveGlobalSettings:
             let settings = extractSettings(data: data)
             delegate?.didReceiveGlobalSettings(settings)
-
+            
         case .didReceiveSettings:
             guard let event: StreamDeckEvent<UndefinedPayload> = decodeEvent(data: data),
                   let action = event.action,
@@ -298,11 +311,11 @@ extension StreamDeckConnection: WebSocketDelegate {
                 logError("Unable to decode event \(String(data: data, encoding: .utf8) ?? "")")
                 return
             }
-
+            
             let settings = extractSettings(data: data)
-
+            
             delegate?.didReceiveSettings(settings, action: action, context: context, device: device)
-
+            
         case .keyDown:
             guard let event: StreamDeckEvent<KeyPayload> = decodeEvent(data: data),
                   let action = event.action,
@@ -312,15 +325,15 @@ extension StreamDeckConnection: WebSocketDelegate {
                 logError("Unable to decode event \(String(data: data, encoding: .utf8) ?? "")")
                 return
             }
-
+            
             delegate?.keyDown(
-                    (payload.coordinates.row, payload.coordinates.column),
-                    isInMultiAction: payload.isInMultiAction,
-                    action: action,
-                    context: context,
-                    device: device
+                (payload.coordinates.row, payload.coordinates.column),
+                isInMultiAction: payload.isInMultiAction,
+                action: action,
+                context: context,
+                device: device
             )
-
+            
         case .keyUp:
             guard let event: StreamDeckEvent<KeyPayload> = decodeEvent(data: data),
                   let action = event.action,
@@ -330,15 +343,15 @@ extension StreamDeckConnection: WebSocketDelegate {
                 logError("Unable to decode event \(String(data: data, encoding: .utf8) ?? "")")
                 return
             }
-
+            
             delegate?.keyUp(
-                    (payload.coordinates.row, payload.coordinates.column),
-                    isInMultiAction: payload.isInMultiAction,
-                    action: action,
-                    context: context,
-                    device: device
+                (payload.coordinates.row, payload.coordinates.column),
+                isInMultiAction: payload.isInMultiAction,
+                action: action,
+                context: context,
+                device: device
             )
-
+            
         case .propertyInspectorDidAppear:
             guard let event: StreamDeckEvent<UndefinedPayload> = decodeEvent(data: data),
                   let action = event.action,
@@ -347,9 +360,9 @@ extension StreamDeckConnection: WebSocketDelegate {
                 logError("Unable to decode event \(String(data: data, encoding: .utf8) ?? "")")
                 return
             }
-
+            
             delegate?.propertyInspectorDidAppear(action: action, context: context, device: device)
-
+            
         case .propertyInspectorDidDisappear:
             guard let event: StreamDeckEvent<UndefinedPayload> = decodeEvent(data: data),
                   let action = event.action,
@@ -358,12 +371,12 @@ extension StreamDeckConnection: WebSocketDelegate {
                 logError("Unable to decode event \(String(data: data, encoding: .utf8) ?? "")")
                 return
             }
-
+            
             delegate?.propertyInspectorDidDisappear(action: action, context: context, device: device)
-
+            
         case .systemDidWakeUp:
             delegate?.didWakeUp()
-
+            
         case .titleParametersDidChange:
             guard let event: StreamDeckEvent<TitleDidChangePayload> = decodeEvent(data: data),
                   let action = event.action,
@@ -375,17 +388,17 @@ extension StreamDeckConnection: WebSocketDelegate {
             }
             
             let settings = extractSettings(data: data)
-
+            
             delegate?.didChangeButtonTitle(
-                    payload,
-                    coordinates: (payload.coordinates.row, payload.coordinates.column),
-                    state: payload.state,
-                    settings: settings,
-                    action: action,
-                    context: context,
-                    device: device
+                payload,
+                coordinates: (payload.coordinates.row, payload.coordinates.column),
+                state: payload.state,
+                settings: settings,
+                action: action,
+                context: context,
+                device: device
             )
-
+            
         case .willAppear:
             guard let event: StreamDeckEvent<StandardPayload> = decodeEvent(data: data),
                   let action = event.action,
@@ -397,16 +410,16 @@ extension StreamDeckConnection: WebSocketDelegate {
             }
             
             let settings = extractSettings(data: data)
-
+            
             delegate?.willAppear(
-                    (payload.coordinates.row, payload.coordinates.column),
-                    isInMultiAction: payload.isInMultiAction,
-                    settings: settings,
-                    action: action,
-                    context: context,
-                    device: device
+                (payload.coordinates.row, payload.coordinates.column),
+                isInMultiAction: payload.isInMultiAction,
+                settings: settings,
+                action: action,
+                context: context,
+                device: device
             )
-
+            
         case .willDisappear:
             guard let event: StreamDeckEvent<StandardPayload> = decodeEvent(data: data),
                   let action = event.action,
@@ -418,16 +431,16 @@ extension StreamDeckConnection: WebSocketDelegate {
             }
             
             let settings = extractSettings(data: data)
-
+            
             delegate?.willDisappear(
-                    (payload.coordinates.row, payload.coordinates.column),
-                    isInMultiAction: payload.isInMultiAction,
-                    settings: settings,
-                    action: action,
-                    context: context,
-                    device: device
+                (payload.coordinates.row, payload.coordinates.column),
+                isInMultiAction: payload.isInMultiAction,
+                settings: settings,
+                action: action,
+                context: context,
+                device: device
             )
-
+            
         case .sendToPlugin:
             guard let event: StreamDeckEvent<UndefinedPayload> = decodeEvent(data: data),
                   let action = event.action,
@@ -437,9 +450,9 @@ extension StreamDeckConnection: WebSocketDelegate {
             }
             
             let payload = extractPayload(data: data)
-
+            
             delegate?.receivedPayloadFromPropertyInspector(payload, action: action, context: context)
-
+            
         }
     }
     

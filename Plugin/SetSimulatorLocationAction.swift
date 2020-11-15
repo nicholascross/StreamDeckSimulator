@@ -3,7 +3,7 @@ import StreamDeckKit
 import CoreLocation
 import SwiftUI
 
-public final class SetSimulatorLocationAction {
+public class SetSimulatorLocationAction {
     private let connection: StreamDeckConnection
     private var loadedSettings: [String: Settings] = [:]
     
@@ -119,23 +119,41 @@ public final class SetSimulatorLocationAction {
         
     }
     
+    func coordinatesForContext(_ context: String) -> CLLocationCoordinate2D? {
+        let settings = settingsForContext(context)
+
+        guard let lat = settings.latitude, let long = settings.longitude,
+              let latitude = Double(lat), let longitude = Double(long) else {
+            return nil
+        }
+        
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+    
+    func simulatorForContext(_ context: String) -> Simulator? {
+        let settings = settingsForContext(context)
+
+        guard  let simulatorUDID = settings.simulator,
+               let simulator = try? SimulatorControl().simulators().first(where: { $0.udid.uuidString == simulatorUDID }) else {
+            return nil
+        }
+        
+        return simulator
+    }
+    
     private func handleUpdateValue(_ value: Any, key: String, context: String) {
         var settings = settingsForContext(context)
         settings.update(key: key, value: value)
         logDebug("will update settings: \(settings)")
         
-        updateSettingsForContext(context, simulator: settings.simulator, latitude: settings.latitude, longitude: settings.longitude)
+        updateSettingsForContext(context, simulator: settings.simulator, latitude: settings.latitude, longitude: settings.longitude, profile: settings.profile)
         updateIcon(context: context)
     }
     
     private func updateIcon(context: String) {
-        let settings = settingsForContext(context)
-        
-        if let lat = settings.latitude, let long = settings.longitude,
-           let latitude = Double(lat), let longitude = Double(long),
-           let simulatorUDID = settings.simulator,
-           let simulator = try? SimulatorControl().simulators().first(where: { $0.udid.uuidString == simulatorUDID }) {
-            makeMapIcon(coordinates: CLLocationCoordinate2D(latitude: latitude, longitude: longitude)) { image in
+        if let coordinates = coordinatesForContext(context),
+           let simulator = simulatorForContext(context) {
+            makeMapIcon(coordinates: coordinates) { image in
                 self.connection.setButtonIcon(context: context) {
                     ZStack {
                         Image(nsImage: image)
@@ -150,17 +168,18 @@ public final class SetSimulatorLocationAction {
         }
     }
     
-    private func settingsForContext(_ context: String) -> Settings {
+    func settingsForContext(_ context: String) -> Settings {
         return loadedSettings[context] ?? Settings()
     }
     
-    private func updateSettingsForContext(_ context: String, simulator: String? = nil, latitude: String? = nil, longitude: String? = nil) {
+    func updateSettingsForContext(_ context: String, simulator: String? = nil, latitude: String? = nil, longitude: String? = nil, profile: String? = nil) {
         let current = settingsForContext(context)
         
         let settings = Settings(
             simulator: simulator ?? current.simulator,
             latitude: latitude ?? current.latitude,
-            longitude: longitude ?? current.longitude
+            longitude: longitude ?? current.longitude,
+            profile: profile ?? current.profile
         )
         
         loadedSettings[context] = settings
@@ -173,6 +192,7 @@ struct Settings: Codable {
     var simulator: String?
     var latitude: String?
     var longitude: String?
+    var profile: String?
     
     mutating func update(key: String, value: Any) {
         switch Fields(rawValue: key) {
@@ -182,6 +202,8 @@ struct Settings: Codable {
             latitude = value as? String
         case .longitude:
             longitude = value as? String
+        case .profile:
+            profile = value as? String
         default:
             break
         }
@@ -192,4 +214,5 @@ private enum Fields: String {
     case simulator
     case latitude
     case longitude
+    case profile
 }

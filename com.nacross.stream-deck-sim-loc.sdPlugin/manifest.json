@@ -2,9 +2,9 @@
   "Actions": [
     {
       "Icon": "images/ActionIcon",
-      "Name": "StreamDeckSimLocAction",
+      "Name": "Set location",
       "SupportedInMultiActions": false,
-      "Tooltip": "StreamDeckSimLoc",
+      "Tooltip": "Set location of the iOS simulator",
       "UUID": "com.nacross.stream-deck-sim-loc.action",
       "States": [
         {
@@ -13,17 +13,58 @@
           "FontSize": "16"
         }
       ]
+    },
+    {
+      "Icon": "images/TravelIcon",
+      "Name": "Traverse from location",
+      "SupportedInMultiActions": false,
+      "Tooltip": "StreamDeckSimLoc",
+      "UUID": "com.nacross.stream-deck-sim-loc.traverse",
+      "States": [
+        {
+          "Image": "images/TravelIcon",
+          "TitleAlignment": "middle", 
+          "FontSize": "16"
+        }
+      ]
+    },
+    {
+      "Icon": "images/ActionIcon",
+      "Name": "Traverse to location",
+      "SupportedInMultiActions": false,
+      "Tooltip": "StreamDeckSimLoc",
+      "UUID": "com.nacross.stream-deck-sim-loc.traverse-to",
+      "States": [
+        {
+          "Image": "images/ActionIcon",
+          "TitleAlignment": "middle", 
+          "FontSize": "16"
+        }
+      ],
+      "VisibleInActionsList" : false
     }
+  ],
+  "Profiles": [
+		{
+			"Name": "Travel", 
+			"ReadOnly": false,
+			"DeviceType": 0
+		},
+		{
+			"Name": "Travel", 
+			"ReadOnly": false,
+			"DeviceType": 3
+		}
   ],
   "SDKVersion": 2,
   "Author": "Nicholas Cross",
   "CodePath": "StreamDeckSimLocPlugin",
   "PropertyInspectorPath": "index_pi.html", 
-  "Description": "Custom plugin",
-  "Name": "StreamDeckSimLoc",
+  "Description": "Update iOS simulator location",
+  "Name": "iOS simulator location updater",
   "Icon": "images/PluginIcon",
-  "URL": "https://github.com/nicholascross/streamdeck",
-  "Version": "1.2",
+  "URL": "https://github.com/nicholascross/StreamDeckSimulator",
+  "Version": "1.3",
   "OS": [
     {
         "Platform": "mac",
