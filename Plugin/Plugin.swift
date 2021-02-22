@@ -8,6 +8,7 @@ public final class Plugin: StreamDeckConnectionDelegate {
     private let setLocationAction: SetSimulatorLocationAction
     private let traverseAction: TraverseAction
     private let traverseToAction: TraverseToAction
+    private let bootAction: BootAction
     
     init(connection: StreamDeckConnection) {
         self.connection = connection
@@ -16,6 +17,7 @@ public final class Plugin: StreamDeckConnectionDelegate {
         let traverseAction = TraverseAction(connection: connection)
         self.traverseAction = traverseAction
         self.traverseToAction = TraverseToAction(connection: connection, traverseAction: traverseAction)
+        self.bootAction = BootAction(connection: connection)
     }
 
     public func didReceiveSettings(_ settings: [String : Any], action: String, context: String, device: String) {
@@ -24,6 +26,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
             setLocationAction.didReceiveSettings(settings, action: action, context: context, device: device)
         case .traverse:
             traverseAction.didReceiveSettings(settings, action: action, context: context, device: device)
+        case .boot:
+            bootAction.didReceiveSettings(settings, action: action, context: context, device: device)
         default:
             break
         }
@@ -48,6 +52,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
             setLocationAction.keyUp(coordinates, isInMultiAction: isInMultiAction, action: action, context: context, device: device)
         case .traverse:
             traverseAction.keyUp(coordinates, isInMultiAction: isInMultiAction, action: action, context: context, device: device)
+        case .boot:
+            bootAction.keyUp(coordinates, isInMultiAction: isInMultiAction, action: action, context: context, device: device)
         default:
             break
         }
@@ -59,6 +65,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
             setLocationAction.propertyInspectorDidAppear(action: action, context: context, device: device)
         case .traverse:
             traverseAction.propertyInspectorDidAppear(action: action, context: context, device: device)
+        case .boot:
+            bootAction.propertyInspectorDidAppear(action: action, context: context, device: device)
         default:
             break
         }
@@ -70,6 +78,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
             setLocationAction.propertyInspectorDidDisappear(action: action, context: context, device: device)
         case .traverse:
             traverseAction.propertyInspectorDidDisappear(action: action, context: context, device: device)
+        case .boot:
+            bootAction.propertyInspectorDidDisappear(action: action, context: context, device: device)
         default:
             break
         }
@@ -83,6 +93,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
             traverseAction.willAppear(coordinates, isInMultiAction: isInMultiAction, settings: settings, action: action, context: context, device: device)
         case .travelTo:
             traverseToAction.willAppear(coordinates, isInMultiAction: isInMultiAction, settings: settings, action: action, context: context, device: device)
+        case .boot:
+            bootAction.willAppear(coordinates, isInMultiAction: isInMultiAction, settings: settings, action: action, context: context, device: device)
         default:
             break
         }
@@ -96,6 +108,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
             traverseAction.willDisappear(coordinates, isInMultiAction: isInMultiAction, settings: settings, action: action, context: context, device: device)
         case .travelTo:
             traverseToAction.willDisappear(coordinates, isInMultiAction: isInMultiAction, settings: settings, action: action, context: context, device: device)
+        case .boot:
+            bootAction.willDisappear(coordinates, isInMultiAction: isInMultiAction, settings: settings, action: action, context: context, device: device)
         default:
             break
         }
@@ -107,6 +121,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
             setLocationAction.receivedPayloadFromPropertyInspector(payload, action: action, context: context)
         case .traverse:
             traverseAction.receivedPayloadFromPropertyInspector(payload, action: action, context: context)
+        case .boot:
+            bootAction.receivedPayloadFromPropertyInspector(payload, action: action, context: context)
         default:
             break
         }
@@ -118,6 +134,8 @@ public final class Plugin: StreamDeckConnectionDelegate {
             setLocationAction.didChangeButtonTitle(title, coordinates: coordinates, state: state, settings: settings, action: action, context: context, device: device)
         case .traverse:
             traverseAction.didChangeButtonTitle(title, coordinates: coordinates, state: state, settings: settings, action: action, context: context, device: device)
+        case .boot:
+            bootAction.didChangeButtonTitle(title, coordinates: coordinates, state: state, settings: settings, action: action, context: context, device: device)
         default:
             break
         }
@@ -152,6 +170,7 @@ private enum ActionType: String, Decodable {
     case setSimulatorLocation = "com.nacross.stream-deck-sim-loc.action"
     case traverse = "com.nacross.stream-deck-sim-loc.traverse"
     case travelTo = "com.nacross.stream-deck-sim-loc.traverse-to"
+    case boot = "com.nacross.stream-deck-sim-loc.boot"
 }
 
 public enum PluginConstants {

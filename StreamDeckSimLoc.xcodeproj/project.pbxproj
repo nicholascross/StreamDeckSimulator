@@ -44,6 +44,7 @@
 		DEA8BF7B43D37F445463A486 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9E316DB562A2457F40BCF7 /* Logging.swift */; };
 		E86C2C54B30F6B90706A8FDB /* SetImagePayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE4A64C82C824A436D184E71 /* SetImagePayload.swift */; };
 		F1246FFD1BE71AE20056EFA7 /* RegisterAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620FED3DBEAC87FC36A7EEF7 /* RegisterAction.swift */; };
+		F819021F25E38A1E0090A30A /* BootAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F819021E25E38A1E0090A30A /* BootAction.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +94,7 @@
 		EC9E316DB562A2457F40BCF7 /* Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		F0C3D6B64E407F322EEC7876 /* StreamDeckActionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamDeckActionType.swift; sourceTree = "<group>"; };
 		F0CB3DDADB53C81F3BB8A9D7 /* SetStatePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetStatePayload.swift; sourceTree = "<group>"; };
+		F819021E25E38A1E0090A30A /* BootAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BootAction.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +151,7 @@
 				D14B7B1F255F795B0021CA78 /* SetSimulatorLocationAction.swift */,
 				D18E99812560C993006AAA1C /* TraverseAction.swift */,
 				D18E99852560E606006AAA1C /* TraverseToAction.swift */,
+				F819021E25E38A1E0090A30A /* BootAction.swift */,
 			);
 			path = Plugin;
 			sourceTree = "<group>";
@@ -371,6 +374,7 @@
 				D18B70D4254D8F12005BEE7A /* SimulatorControl.swift in Sources */,
 				D14B7B20255F795B0021CA78 /* SetSimulatorLocationAction.swift in Sources */,
 				D18E99862560E606006AAA1C /* TraverseToAction.swift in Sources */,
+				F819021F25E38A1E0090A30A /* BootAction.swift in Sources */,
 				0FA38B779A650154A15ED2C1 /* main.swift in Sources */,
 				D198470D2556494D009252D1 /* MapIcon.swift in Sources */,
 			);

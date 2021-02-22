@@ -150,7 +150,7 @@ public class SetSimulatorLocationAction {
         updateIcon(context: context)
     }
     
-    private func updateIcon(context: String) {
+    func updateIcon(context: String) {
         if let coordinates = coordinatesForContext(context),
            let simulator = simulatorForContext(context) {
             makeMapIcon(coordinates: coordinates) { image in

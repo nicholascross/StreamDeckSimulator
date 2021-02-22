@@ -24,7 +24,10 @@ public final class SimulatorControl {
     
         DistributedNotificationCenter.default().post(notification)
     }
-    
+
+    public func bootSimulator(_ simulator: Simulator) {
+        shell.xcrun("simctl boot \(simulator.udid)")
+    }
 }
 
 public struct Simulators: Decodable {
