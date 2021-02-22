@@ -20,7 +20,7 @@ open StreamDeckSimLoc.xcodeproj
 
 Then build the project and a plugin package will be created in the products directory.  This can be located by right clicking on the binary and selecting "show in finder"
 
-Alternatively you can download the latest release from here [1.3.0](https://github.com/nicholascross/StreamDeckSimulator/releases/download/1.3.0/com.nacross.stream-deck-sim-loc.streamDeckPlugin)
+Alternatively you can download the latest release from here [1.4.0](https://github.com/nicholascross/StreamDeckSimulator/releases/download/1.4.0/com.nacross.stream-deck-sim-loc.streamDeckPlugin.zip)
 
 Double click the plugin package `com.nacross.stream-deck-sim-loc.streamDeckPlugin` to complete installation.
 
